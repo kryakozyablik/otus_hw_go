@@ -7,7 +7,7 @@ import (
 )
 
 // Change to true if needed
-var taskWithAsteriskIsCompleted = false
+var taskWithAsteriskIsCompleted = true
 
 var text = `Как видите, он  спускается  по  лестнице  вслед  за  своим
 	другом   Кристофером   Робином,   головой   вниз,  пересчитывая
@@ -43,6 +43,16 @@ var text = `Как видите, он  спускается  по  лестни�
 	посидеть у огня и послушать какую-нибудь интересную сказку.
 		В этот вечер...`
 
+var exactlyText = `
+ааа" б-б аАа. Б-б АаА!- б-Б Ааа^
+ в - в - - - - - - 
+ г"
+ !@#$%^&*()
+ !@#$%^&*()
+ !@#$%^&*()
+ !@#$%^&*()
+`
+
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
 		assert.Len(t, Top10(""), 0)
@@ -56,5 +66,10 @@ func TestTop10(t *testing.T) {
 			expected := []string{"он", "и", "а", "что", "ты", "не", "если", "-", "то", "Кристофер"}
 			assert.ElementsMatch(t, expected, Top10(text))
 		}
+	})
+
+	t.Run("positive exactlyText test", func(t *testing.T) {
+		expected := []string{"ааа", "б-б", "в", "г"}
+		assert.Equal(t, expected, Top10(exactlyText))
 	})
 }
