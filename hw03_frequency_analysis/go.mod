@@ -1,4 +1,4 @@
-module github.com/kryakozyablik/hw03_frequency_analysis
+module github.com/kryakozyablik/otus_hw_go/hw03_frequency_analysis
 
 go 1.14
 

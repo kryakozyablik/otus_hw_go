@@ -12,7 +12,7 @@ type wordStat struct {
 }
 
 func Top10(text string) []string {
-	wordsCount := wordCount(text)
+	wordsCount := wordsCount(text)
 	wordsStat := buildSortedWordsStat(wordsCount)
 	returnWordCnt := min(len(wordsStat), 10)
 	topWords := make([]string, 0, returnWordCnt)
@@ -24,7 +24,7 @@ func Top10(text string) []string {
 	return topWords
 }
 
-func wordCount(text string) map[string]int {
+func wordsCount(text string) map[string]int {
 	text = strings.ToLower(text)
 	text = regexp.MustCompile(`(?i)[^a-zа-я0-9\- ]`).ReplaceAllString(text, " ")
 	words := strings.Split(text, " ")
