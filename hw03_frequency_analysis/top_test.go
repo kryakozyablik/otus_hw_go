@@ -59,6 +59,13 @@ var wordCountTestText = `
 два:д:два д
 `
 
+type testMinData struct {
+	name     string
+	val1     int
+	val2     int
+	expected int
+}
+
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
 		assert.Len(t, Top10(""), 0)
@@ -133,4 +140,17 @@ func TestBuildSortedWordsStat(t *testing.T) {
 
 		assert.Equal(t, expected, buildSortedWordsStat(testMap))
 	})
+}
+
+func TestMin(t *testing.T) {
+	for _, testData := range [...]testMinData{
+		{name: "left min", val1: 1, val2: 2, expected: 1},
+		{name: "right min", val1: 3, val2: 2, expected: 2},
+		{name: "both min", val1: 3, val2: 3, expected: 3},
+		{name: "negative", val1: -10, val2: 2, expected: -10},
+	} {
+		t.Run(testData.name, func(t *testing.T) {
+			assert.Equal(t, testData.expected, min(testData.val1, testData.val2))
+		})
+	}
 }
