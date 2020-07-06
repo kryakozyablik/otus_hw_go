@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var punctuationRegexp = regexp.MustCompile(`(?i)[^a-zа-я0-9\- ]`)
+
 type wordStat struct {
 	word  string
 	count int
@@ -26,9 +28,9 @@ func Top10(text string) []string {
 
 func wordsCount(text string) map[string]int {
 	text = strings.ToLower(text)
-	text = regexp.MustCompile(`(?i)[^a-zа-я0-9\- ]`).ReplaceAllString(text, " ")
+	text = punctuationRegexp.ReplaceAllString(text, " ")
 	words := strings.Split(text, " ")
-	wordsCount := make(map[string]int, len(words))
+	wordsCount := make(map[string]int)
 
 	for _, word := range words {
 		if word == "" || word == "-" {
