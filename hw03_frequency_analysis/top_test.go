@@ -3,7 +3,7 @@ package hw03_frequency_analysis // nolint:golint
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // Change to true if needed
@@ -68,16 +68,16 @@ type testMinData struct {
 
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
-		assert.Len(t, Top10(""), 0)
+		require.Len(t, Top10(""), 0)
 	})
 
 	t.Run("positive test", func(t *testing.T) {
 		if taskWithAsteriskIsCompleted {
 			expected := []string{"он", "а", "и", "что", "ты", "не", "если", "то", "его", "кристофер", "робин", "в"}
-			assert.Subset(t, expected, Top10(text))
+			require.Subset(t, expected, Top10(text))
 		} else {
 			expected := []string{"он", "и", "а", "что", "ты", "не", "если", "-", "то", "Кристофер"}
-			assert.ElementsMatch(t, expected, Top10(text))
+			require.ElementsMatch(t, expected, Top10(text))
 		}
 	})
 
