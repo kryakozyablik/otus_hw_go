@@ -1,22 +1,70 @@
-package hw04_lru_cache //nolint:golint,stylecheck
+package hw04_lru_cache // nolint:golint,stylecheck
+import "sync"
 
 type Key string
 
 type Cache interface {
-	// Place your code here
+	Set(key Key, value interface{}) bool // Добавить значение в кэш по ключу
+	Get(key Key) (interface{}, bool)     // Получить значение из кэша по ключу
+	Clear()                              // Очистить кэш
 }
 
 type lruCache struct {
-	// Place your code here:
-	// - capacity
-	// - queue
-	// - items
+	capacity int
+	queue    List
+	items    map[Key]*listItem
+	mux      sync.Mutex
+}
+
+func (l *lruCache) Set(key Key, value interface{}) bool {
+	ci := cacheItem{key: key, value: value}
+
+	l.mux.Lock()
+	defer l.mux.Unlock()
+
+	if item, ok := l.items[key]; ok {
+		l.queue.MoveToFront(item)
+		item.Value = ci
+		return true
+	}
+
+	l.items[key] = l.queue.PushFront(ci)
+
+	if l.queue.Len() > l.capacity {
+		listItem := l.queue.Back()
+		ci := listItem.Value.(cacheItem)
+		delete(l.items, ci.key)
+		l.queue.Remove(listItem)
+	}
+
+	return false
+}
+
+func (l *lruCache) Get(key Key) (interface{}, bool) {
+	l.mux.Lock()
+	defer l.mux.Unlock()
+
+	if item, ok := l.items[key]; ok {
+		ci := item.Value.(cacheItem)
+		return ci.value, true
+	}
+
+	return nil, false
+}
+
+func (l *lruCache) Clear() {
+	l.mux.Lock()
+	defer l.mux.Unlock()
+
+	l.queue = NewList()
+	l.items = make(map[Key]*listItem)
 }
 
 type cacheItem struct {
-	// Place your code here
+	key   Key
+	value interface{}
 }
 
 func NewCache(capacity int) Cache {
-	return &lruCache{}
+	return &lruCache{capacity: capacity, queue: NewList(), items: make(map[Key]*listItem)}
 }
