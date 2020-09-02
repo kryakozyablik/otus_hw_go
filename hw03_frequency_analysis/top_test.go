@@ -83,7 +83,7 @@ func TestTop10(t *testing.T) {
 
 	t.Run("positive exactlyText test", func(t *testing.T) {
 		expected := []string{"ааа", "б-б", "в", "г"}
-		assert.Equal(t, expected, Top10(exactlyText))
+		require.Equal(t, expected, Top10(exactlyText))
 	})
 }
 
@@ -97,7 +97,7 @@ func TestWordsCount(t *testing.T) {
 			"д":       2,
 			"три":     3,
 		}
-		assert.Equal(t, expected, wordsCount(wordCountTestText))
+		require.Equal(t, expected, wordsCount(wordCountTestText))
 	})
 }
 
@@ -131,14 +131,14 @@ func TestBuildSortedWordsStat(t *testing.T) {
 			{word: "раз", count: 1},
 		}
 
-		assert.Equal(t, expected, buildSortedWordsStat(testMap))
+		require.Equal(t, expected, buildSortedWordsStat(testMap))
 	})
 
 	t.Run("empty test", func(t *testing.T) {
 		testMap := make(map[string]int)
 		expected := make([]wordStat, 0, 0)
 
-		assert.Equal(t, expected, buildSortedWordsStat(testMap))
+		require.Equal(t, expected, buildSortedWordsStat(testMap))
 	})
 }
 
@@ -150,7 +150,7 @@ func TestMin(t *testing.T) {
 		{name: "negative", val1: -10, val2: 2, expected: -10},
 	} {
 		t.Run(testData.name, func(t *testing.T) {
-			assert.Equal(t, testData.expected, min(testData.val1, testData.val2))
+			require.Equal(t, testData.expected, min(testData.val1, testData.val2))
 		})
 	}
 }
