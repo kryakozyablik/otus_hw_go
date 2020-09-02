@@ -2,24 +2,24 @@ package hw04_lru_cache // nolint:golint,stylecheck
 
 type List interface {
 	Len() int                          // длина списка
-	Front() *listItem                  // первый Item
-	Back() *listItem                   // последний Item
-	PushFront(v interface{}) *listItem // добавить значение в начало
-	PushBack(v interface{}) *listItem  // добавить значение в конец
-	Remove(i *listItem)                // удалить элемент
-	MoveToFront(i *listItem)           // переместить элемент в начало
+	Front() *ListItem                  // первый Item
+	Back() *ListItem                   // последний Item
+	PushFront(v interface{}) *ListItem // добавить значение в начало
+	PushBack(v interface{}) *ListItem  // добавить значение в конец
+	Remove(i *ListItem)                // удалить элемент
+	MoveToFront(i *ListItem)           // переместить элемент в начало
 }
 
-type listItem struct {
+type ListItem struct {
 	Value interface{} // значение
-	Next  *listItem   // следующий элемент
-	Prev  *listItem   // предыдущий элемент
+	Next  *ListItem   // следующий элемент
+	Prev  *ListItem   // предыдущий элемент
 }
 
 type list struct {
 	len       int
-	firstItem *listItem
-	lastItem  *listItem
+	firstItem *ListItem
+	lastItem  *ListItem
 }
 
 func NewList() List {
@@ -30,16 +30,16 @@ func (l *list) Len() int {
 	return l.len
 }
 
-func (l *list) Front() *listItem {
+func (l *list) Front() *ListItem {
 	return l.firstItem
 }
 
-func (l *list) Back() *listItem {
+func (l *list) Back() *ListItem {
 	return l.lastItem
 }
 
-func (l *list) PushFront(v interface{}) *listItem {
-	i := &listItem{Value: v}
+func (l *list) PushFront(v interface{}) *ListItem {
+	i := &ListItem{Value: v}
 
 	if l.len > 0 {
 		fi := l.Front()
@@ -55,8 +55,8 @@ func (l *list) PushFront(v interface{}) *listItem {
 	return i
 }
 
-func (l *list) PushBack(v interface{}) *listItem {
-	i := &listItem{Value: v}
+func (l *list) PushBack(v interface{}) *ListItem {
+	i := &ListItem{Value: v}
 
 	if l.len > 0 {
 		li := l.Back()
@@ -72,7 +72,7 @@ func (l *list) PushBack(v interface{}) *listItem {
 	return i
 }
 
-func (l *list) Remove(i *listItem) {
+func (l *list) Remove(i *ListItem) {
 	switch {
 	case l.firstItem == i && l.lastItem == i:
 		l.firstItem = nil
@@ -94,7 +94,7 @@ func (l *list) Remove(i *listItem) {
 	l.len--
 }
 
-func (l *list) MoveToFront(i *listItem) {
+func (l *list) MoveToFront(i *ListItem) {
 	l.Remove(i)
 	l.PushFront(i.Value)
 }
