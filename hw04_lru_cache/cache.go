@@ -25,6 +25,7 @@ func (l *lruCache) Set(key Key, value interface{}) bool {
 	if item, ok := l.items[key]; ok {
 		l.queue.MoveToFront(item)
 		item.Value = ci
+
 		return true
 	}
 
@@ -46,6 +47,7 @@ func (l *lruCache) Get(key Key) (interface{}, bool) {
 
 	if item, ok := l.items[key]; ok {
 		ci := item.Value.(cacheItem)
+
 		return ci.value, true
 	}
 
