@@ -1,4 +1,4 @@
-package hw06_pipeline_execution //nolint:golint,stylecheck
+package hw06_pipeline_execution // nolint:golint,stylecheck
 
 type (
 	In  = <-chan interface{}
@@ -9,6 +9,29 @@ type (
 type Stage func(in In) (out Out)
 
 func ExecutePipeline(in In, done In, stages ...Stage) Out {
-	// Place your code here
-	return nil
+	out := make(Bi)
+	stageInOut := in
+
+	for _, stage := range stages {
+		stageInOut = stage(stageInOut)
+	}
+
+	go func() {
+		defer close(out)
+
+		for {
+			select {
+			case v, ok := <-stageInOut:
+				if !ok {
+					return
+				}
+
+				out <- v
+			case <-done:
+				return
+			}
+		}
+	}()
+
+	return out
 }
