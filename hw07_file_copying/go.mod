@@ -1,3 +1,7 @@
-module github.com/fixme_my_friend/hw07_file_copying
+module github.com/kryakozyablik/otus_hw_go/hw07_file_copying
 
 go 1.14
+
+require (
+	github.com/stretchr/testify v1.6.1
+)
