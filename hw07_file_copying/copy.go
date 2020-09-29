@@ -21,7 +21,7 @@ func Copy(fromPath string, toPath string, offset, limit int64) error {
 		return ErrFileDoesNotExists
 	}
 
-	if info.Size() == 0 {
+	if !info.Mode().IsRegular() {
 		return ErrUnsupportedFile
 	}
 

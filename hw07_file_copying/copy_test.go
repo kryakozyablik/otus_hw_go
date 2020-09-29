@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"testing"
 
@@ -15,16 +14,15 @@ type test struct {
 }
 
 func TestCopy(t *testing.T) {
-	tmpFile, err := ioutil.TempFile("/tmp", "output")
-	if err != nil {
-		log.Fatal(err)
-	}
+	tmpDir, err := ioutil.TempDir("", "test_tmp")
+	require.NoError(t, err)
+
+	tmpFile, err := ioutil.TempFile(tmpDir, "output")
+	require.NoError(t, err)
 
 	defer func() {
-		err := os.Remove(tmpFile.Name())
-		if err != nil {
-			log.Fatal(err)
-		}
+		err := os.RemoveAll(tmpDir)
+		require.NoError(t, err)
 	}()
 
 	t.Run("file copy test", func(t *testing.T) {
