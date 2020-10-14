@@ -25,13 +25,13 @@ func TestReadDir(t *testing.T) {
 
 	t.Run("with dir", func(t *testing.T) {
 		envList, err := ReadDir("testdata/env_with_dir")
-		require.Error(t, err, DIR_EXISTS_ERROR)
+		require.Error(t, err, ErrDirExists)
 		require.Nil(t, envList)
 	})
 
 	t.Run("with dir", func(t *testing.T) {
 		envList, err := ReadDir("testdata/env_with_invalid_file")
-		require.Error(t, err, INVALID_FILE_ERROR)
+		require.Error(t, err, ErrInvalidFile)
 		require.Nil(t, envList)
 	})
 }

@@ -12,8 +12,8 @@ import (
 
 type Environment map[string]string
 
-var DIR_EXISTS_ERROR = errors.New("exists directory")
-var INVALID_FILE_ERROR = errors.New("invalid file found")
+var ErrDirExists = errors.New("exists directory")
+var ErrInvalidFile = errors.New("invalid file found")
 
 // ReadDir reads a specified directory and returns map of env variables.
 // Variables represented as files where filename is name of variable, file first line is a value.
@@ -27,11 +27,11 @@ func ReadDir(dir string) (Environment, error) {
 
 	for _, file := range files {
 		if file.IsDir() {
-			return nil, DIR_EXISTS_ERROR
+			return nil, ErrDirExists
 		}
 
 		if strings.Contains(file.Name(), "=") {
-			return nil, INVALID_FILE_ERROR
+			return nil, ErrInvalidFile
 		}
 
 		line, err := getLineFromFile(filepath.Join(dir, file.Name()))
