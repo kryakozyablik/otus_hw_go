@@ -2,13 +2,18 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"io"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
 type Environment map[string]string
+
+var DIR_EXISTS_ERROR = errors.New("exists directory")
+var INVALID_FILE_ERROR = errors.New("invalid file found")
 
 // ReadDir reads a specified directory and returns map of env variables.
 // Variables represented as files where filename is name of variable, file first line is a value.
@@ -18,22 +23,18 @@ func ReadDir(dir string) (Environment, error) {
 		return nil, err
 	}
 
-	if dir[len(dir)-1] != '/' {
-		dir += "/"
-	}
-
 	env := make(Environment)
 
 	for _, file := range files {
 		if file.IsDir() {
-			continue
+			return nil, DIR_EXISTS_ERROR
 		}
 
 		if strings.Contains(file.Name(), "=") {
-			continue
+			return nil, INVALID_FILE_ERROR
 		}
 
-		line, err := getLineFromFile(dir + file.Name())
+		line, err := getLineFromFile(filepath.Join(dir, file.Name()))
 		if err != nil {
 			return nil, err
 		}
